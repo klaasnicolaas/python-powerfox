@@ -1,0 +1,15 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: v3.0.2
+_src_path: gh:klaasnicolaas/pypackage-template
+author_email: hello@student-techlife.com
+author_name: Klaas Schoute
+github_sponsors: true
+github_username: klaasnicolaas
+package_name: powerfox
+project_name: Powerfox
+project_short_description: description
+project_slug: powerfox
+run_poetry_install: false
+software_license: MIT License
+tweet_on_release: true
+twitter_username: klaasnicolaas
