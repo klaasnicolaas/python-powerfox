@@ -1,7 +1,7 @@
 # serializer version: 1
 # name: test_devices_data
   list([
-    Device(device_id='9x9x1f12xx3x', name='Wohnung unten', date_added=1664702555, main_device=False, bidirectional=True, division=0),
+    Device(device_id='9x9x1f12xx3x', name='Wohnung unten', date_added=1664702555, main_device=True, bidirectional=True, division=0),
     Device(device_id='9x9x1f12xx2x', name='Wohnung oben', date_added=1664702555, main_device=True, bidirectional=True, division=0),
     Device(device_id='9x9x1f12xx1x', name=None, date_added=1664702555, main_device=True, bidirectional=False, division=1),
   ])
