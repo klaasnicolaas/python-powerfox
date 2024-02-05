@@ -1,0 +1,25 @@
+[
+  {
+    "DeviceId": "9x9x1f12xx3x",
+    "Name": "Wohnung unten",
+    "AccountAssociatedSince": 1664702555,
+    "MainDevice": true,
+    "Prosumer": true,
+    "Division": 0
+  },
+  {
+    "DeviceId": "9x9x1f12xx2x",
+    "Name": "Wohnung oben",
+    "AccountAssociatedSince": 1664702555,
+    "MainDevice": true,
+    "Prosumer": true,
+    "Division": 0
+  },
+  {
+    "DeviceId": "9x9x1f12xx1x",
+    "AccountAssociatedSince": 1664702555,
+    "MainDevice": true,
+    "Prosumer": false,
+    "Division": 1
+  }
+]
