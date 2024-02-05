@@ -1,45 +1,28 @@
 """Asynchronous Python client for Powerfox."""
 from __future__ import annotations
 
-from dataclasses import dataclass
-from typing import TYPE_CHECKING, Any
+from dataclasses import dataclass, field
+from datetime import UTC, datetime
 
-if TYPE_CHECKING:
-    from datetime import datetime
+from mashumaro import field_options
+from mashumaro.mixins.orjson import DataClassORJSONMixin
 
 
 @dataclass
-class Device:
-    """Object representing an Device from Powerfox."""
+class Device(DataClassORJSONMixin):
+    """Object representing a Device from Powerfox."""
 
-    device_id: str
-    name: str | None
-    date_added: datetime
-    main_device: bool
-    bidirectional: bool
-    division: int
-
-    @staticmethod
-    def from_json(data: dict[str | int, Any]) -> Device:
-        """Return Device object from the Powerfox API response.
-
-        Args:
-        ----
-            data: The data from the Powerfox API.
-
-        Returns:
-        -------
-            A Device object.
-
-        """
-        return Device(
-            device_id=data["DeviceId"],
-            name=data.get("Name"),
-            date_added=data["AccountAssociatedSince"],
-            main_device=data["MainDevice"],
-            bidirectional=data["Prosumer"],
-            division=data["Division"],
+    device_id: str = field(metadata=field_options(alias="DeviceId"))
+    name: str | None = field(metadata=field_options(alias="Name"), default=None)
+    date_added: datetime = field(
+        metadata=field_options(
+            alias="AccountAssociatedSince",
+            deserialize=lambda x: datetime.fromtimestamp(x, tz=UTC),
         )
+    )
+    main_device: bool = field(metadata=field_options(alias="MainDevice"))
+    bidirectional: bool = field(metadata=field_options(alias="Prosumer"))
+    division: int = field(metadata=field_options(alias="Division"))
 
 
 # class Power

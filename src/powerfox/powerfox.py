@@ -4,10 +4,11 @@ import asyncio
 import socket
 from dataclasses import dataclass
 from importlib import metadata
-from typing import Any, Self, cast
+from typing import Any, Self
 
 from aiohttp import BasicAuth, ClientError, ClientResponseError, ClientSession
 from aiohttp.hdrs import METH_GET
+from mashumaro.codecs.orjson import ORJSONDecoder
 from yarl import URL
 
 from .exceptions import (
@@ -36,7 +37,7 @@ class Powerfox:
         *,
         method: str = METH_GET,
         params: dict[str, Any] | None = None,
-    ) -> Any:
+    ) -> str:
         """Handle a request to the Powerfox API.
 
         Args:
@@ -109,7 +110,7 @@ class Powerfox:
                 {"Content-Type": content_type, "Response": text},
             )
 
-        return cast(dict[str, Any], await response.json())
+        return await response.text()
 
     async def devices(self) -> list[Device]:
         """Get list of all Poweropti devices.
@@ -119,8 +120,8 @@ class Powerfox:
             A list of all Poweropti devices.
 
         """
-        devices = await self._request("my/all/devices")
-        return [Device.from_json(device) for device in devices]
+        response = await self._request("my/all/devices")
+        return ORJSONDecoder(list[Device]).decode(response)
 
     async def close(self) -> None:
         """Close open client session."""

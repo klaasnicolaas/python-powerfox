@@ -26,6 +26,8 @@ packages = [
 
 [tool.poetry.dependencies]
 aiohttp = ">=3.0.0"
+mashumaro = "^3.12"
+orjson = "^3.9.13"
 python = "^3.11"
 yarl = ">=1.6.0"
 
