@@ -1,0 +1,8 @@
+# serializer version: 1
+# name: test_all_devices_data
+  list([
+    Device(device_id='9x9x1f12xx3x', date_added=datetime.datetime(2022, 10, 2, 9, 22, 35, tzinfo=datetime.timezone.utc), main_device=True, bidirectional=True, division=0, name='Wohnung unten'),
+    Device(device_id='9x9x1f12xx2x', date_added=datetime.datetime(2022, 10, 2, 9, 22, 35, tzinfo=datetime.timezone.utc), main_device=True, bidirectional=True, division=0, name='Wohnung oben'),
+    Device(device_id='9x9x1f12xx1x', date_added=datetime.datetime(2022, 10, 2, 9, 22, 35, tzinfo=datetime.timezone.utc), main_device=True, bidirectional=False, division=1, name=None),
+  ])
+# ---

@@ -9,7 +9,7 @@ from powerfox import Device, Powerfox
 from . import load_fixtures
 
 
-async def test_devices_data(
+async def test_all_devices_data(
     aresponses: ResponsesMockServer,
     snapshot: SnapshotAssertion,
 ) -> None:
@@ -26,5 +26,5 @@ async def test_devices_data(
     )
     async with ClientSession() as session:
         client = Powerfox(username="user", password="pass", session=session)
-        devices: list[Device] = await client.devices()
+        devices: list[Device] = await client.all_devices()
         assert devices == snapshot

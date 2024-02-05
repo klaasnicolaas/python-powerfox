@@ -13,7 +13,6 @@ class Device(DataClassORJSONMixin):
     """Object representing a Device from Powerfox."""
 
     device_id: str = field(metadata=field_options(alias="DeviceId"))
-    name: str | None = field(metadata=field_options(alias="Name"), default=None)
     date_added: datetime = field(
         metadata=field_options(
             alias="AccountAssociatedSince",
@@ -23,6 +22,7 @@ class Device(DataClassORJSONMixin):
     main_device: bool = field(metadata=field_options(alias="MainDevice"))
     bidirectional: bool = field(metadata=field_options(alias="Prosumer"))
     division: int = field(metadata=field_options(alias="Division"))
+    name: str | None = field(metadata=field_options(alias="Name"), default=None)
 
 
 # class Power

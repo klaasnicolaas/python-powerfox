@@ -18,6 +18,8 @@ from .exceptions import (
 )
 from .models import Device
 
+VERSION = metadata.version(__package__)
+
 
 @dataclass
 class Powerfox:
@@ -58,7 +60,6 @@ class Powerfox:
             PowerfoxError: Received an unexpected response from the Powerfox API.
 
         """
-        version = metadata.version(__package__)
         url = URL.build(
             scheme="https",
             host="backend.powerfox.energy",
@@ -67,7 +68,7 @@ class Powerfox:
 
         headers = {
             "Accept": "application/json",
-            "User-Agent": f"Python Powerfox/{version}",
+            "User-Agent": f"PythonPowerfox/{VERSION}",
         }
 
         if self.session is None:
@@ -112,7 +113,7 @@ class Powerfox:
 
         return await response.text()
 
-    async def devices(self) -> list[Device]:
+    async def all_devices(self) -> list[Device]:
         """Get list of all Poweropti devices.
 
         Returns

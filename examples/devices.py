@@ -8,7 +8,7 @@ from powerfox import Powerfox
 async def main() -> None:
     """Show example on getting Powerfox data."""
     async with Powerfox(username="EMAIL_ADDRESS", password="PASSWORD") as client:
-        devices = await client.devices()
+        devices = await client.all_devices()
         print(devices)
 
 

@@ -51,7 +51,7 @@ async def main() -> None:
         username="EMAIL_ADDRESS",
         password="PASSWORD",
     ) as client:
-        devices = await client.devices()
+        devices = await client.all_devices()
         print(devices)
 
 
