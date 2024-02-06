@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "powerfox"
 version = "0.0.0"
-description = "description"
+description = "Asynchronous Python client for the Powerfox devices"
 authors = ["Klaas Schoute <hello@student-techlife.com>"]
 maintainers = ["Klaas Schoute <hello@student-techlife.com>"]
 license = "MIT"
@@ -9,7 +9,7 @@ readme = "README.md"
 homepage = "https://github.com/klaasnicolaas/python-powerfox"
 repository = "https://github.com/klaasnicolaas/python-powerfox"
 documentation = "https://github.com/klaasnicolaas/python-powerfox"
-keywords = ["powerfox", "api", "async", "client"]
+keywords = ["powerfox", "energy", "poweropti", "api", "async", "client"]
 classifiers = [
   "Framework :: AsyncIO",
   "Intended Audience :: Developers",
