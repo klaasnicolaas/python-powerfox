@@ -206,7 +206,7 @@ SOFTWARE.
 <!-- MARKDOWN LINKS & IMAGES -->
 [build-shield]: https://github.com/klaasnicolaas/python-powerfox/actions/workflows/tests.yaml/badge.svg
 [build-url]: https://github.com/klaasnicolaas/python-powerfox/actions/workflows/tests.yaml
-[codecov-shield]: https://codecov.io/gh/klaasnicolaas/python-powerfox/branch/main/graph/badge.svg?token=TOKEN
+[codecov-shield]: https://codecov.io/gh/klaasnicolaas/python-powerfox/branch/main/graph/badge.svg?token=GWI54W3CG9
 [codecov-url]: https://codecov.io/gh/klaasnicolaas/python-powerfox
 [commits-shield]: https://img.shields.io/github/commit-activity/y/klaasnicolaas/python-powerfox.svg
 [commits-url]: https://github.com/klaasnicolaas/python-powerfox/commits/main
@@ -216,7 +216,7 @@ SOFTWARE.
 [downloads-url]: https://pypistats.org/packages/powerfox
 [last-commit-shield]: https://img.shields.io/github/last-commit/klaasnicolaas/python-powerfox.svg
 [license-shield]: https://img.shields.io/github/license/klaasnicolaas/python-powerfox.svg
-[maintainability-shield]: https://api.codeclimate.com/v1/badges/TOKEN/maintainability
+[maintainability-shield]: https://api.codeclimate.com/v1/badges/a036b3dc5a9656137de2/maintainability
 [maintainability-url]: https://codeclimate.com/github/klaasnicolaas/python-powerfox/maintainability
 [maintenance-shield]: https://img.shields.io/maintenance/yes/2024.svg
 [project-stage-shield]: https://img.shields.io/badge/project%20stage-experimental-yellow.svg
