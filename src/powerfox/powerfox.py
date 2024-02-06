@@ -1,14 +1,16 @@
 """Asynchronous Python client for Powerfox."""
+from __future__ import annotations
 
 import asyncio
 import socket
 from dataclasses import dataclass
 from importlib import metadata
-from typing import Any, Self
+from typing import Annotated, Any, Self
 
 from aiohttp import BasicAuth, ClientError, ClientResponseError, ClientSession
 from aiohttp.hdrs import METH_GET
 from mashumaro.codecs.orjson import ORJSONDecoder
+from mashumaro.types import Discriminator
 from yarl import URL
 
 from .exceptions import (
@@ -16,7 +18,7 @@ from .exceptions import (
     PowerfoxConnectionError,
     PowerfoxError,
 )
-from .models import Device
+from .models import Device, Poweropti
 
 VERSION = metadata.version(__package__)
 
@@ -123,6 +125,26 @@ class Powerfox:
         """
         response = await self._request("my/all/devices")
         return ORJSONDecoder(list[Device]).decode(response)
+
+    async def device(self, device_id: str) -> Poweropti:
+        """Get information about a specific Poweropti device.
+
+        Args:
+        ----
+            device_id: The device ID to get information about.
+
+        Returns:
+        -------
+            Information about the Poweropti device.
+
+        """
+        response = await self._request(
+            f"my/{device_id}/current",
+            params={"unit": "kwh"},
+        )
+        return ORJSONDecoder(
+            Annotated[Poweropti, Discriminator(include_subtypes=True)]
+        ).decode(response)
 
     async def close(self) -> None:
         """Close open client session."""

@@ -35,7 +35,44 @@ pip install powerfox
 
 ## Datasets
 
-- List of all your PowerOpti devices linked to your account.
+- List of all your Poweropti devices linked to your account.
+- Get information from a specific Poweropti device.
+
+<details>
+  <summary>CLICK HERE! to see all datasets</summary>
+
+### All Devices
+
+| Name | Type | Description |
+| :--- | :--- | :---------- |
+| `device_id` | Str | The unique identifier of the device. |
+| `name` | Str | The name of the device. |
+| `date_added` | Datetime | The date the device was added to your account. |
+| `main_device` | Bool | If the device is the main device. |
+| `bidirectional` | Bool | If the device is bidirectional. |
+| `division` | Int | The division number of the device. |
+
+### Poweropti for Power meters
+
+| Name | Type | Description |
+| :--- | :--- | :---------- |
+| `outdated` | Bool | If the data from the device is outdated. |
+| `timestamp` | Datetime | The timestamp of the data. |
+| `power` | Int | The amount of power used in W. |
+| `energy_usage` | Float | The amount of energy used (from the grid) in kWh. |
+| `energy_return` | Float | The amount of energy returned (to the grid) in kWh. |
+| `energy_usage_high_tariff` | Float | The amount of energy used in kWh during high tariff. |
+| `energy_usage_low_tariff` | Float | The amount of energy used in kWh during low tariff. |
+
+### Poweropti for Water meters
+
+| Name | Type | Description |
+| :--- | :--- | :---------- |
+| `outdated` | Bool | If the data from the device is outdated. |
+| `timestamp` | Datetime | The timestamp of the data. |
+| `cold_water` | Float | The amount of cold water used in m³. |
+| `warm_water` | Float | The amount of warm water used in m³. |
+</details>
 
 ### Example
 

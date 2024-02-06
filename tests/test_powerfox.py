@@ -1,6 +1,5 @@
 """Basic tests for Powerfox."""
 # pylint: disable=protected-access
-# ruff: noqa: S106
 import asyncio
 from unittest.mock import patch
 
@@ -17,7 +16,10 @@ from powerfox.exceptions import (
 from . import load_fixtures
 
 
-async def test_json_request(aresponses: ResponsesMockServer) -> None:
+async def test_json_request(
+    aresponses: ResponsesMockServer,
+    powerfox_client: Powerfox,
+) -> None:
     """Test JSON response is handled correctly."""
     aresponses.add(
         "backend.powerfox.energy",
@@ -29,15 +31,9 @@ async def test_json_request(aresponses: ResponsesMockServer) -> None:
             text=load_fixtures("all_devices.json"),
         ),
     )
-    async with ClientSession() as session:
-        client = Powerfox(
-            username="user",
-            password="pass",
-            session=session,
-        )
-        response = await client._request("test")
-        assert response is not None
-        await client.close()
+    response = await powerfox_client._request("test")
+    assert response is not None
+    await powerfox_client.close()
 
 
 async def test_internal_session(aresponses: ResponsesMockServer) -> None:
@@ -85,7 +81,10 @@ async def test_timeout(aresponses: ResponsesMockServer) -> None:
             await client._request("test")
 
 
-async def test_content_type(aresponses: ResponsesMockServer) -> None:
+async def test_content_type(
+    aresponses: ResponsesMockServer,
+    powerfox_client: Powerfox,
+) -> None:
     """Test content type is handled correctly."""
     aresponses.add(
         "backend.powerfox.energy",
@@ -97,10 +96,8 @@ async def test_content_type(aresponses: ResponsesMockServer) -> None:
             text=load_fixtures("all_devices.json"),
         ),
     )
-    async with ClientSession() as session:
-        client = Powerfox(username="user", password="pass", session=session)
-        with pytest.raises(PowerfoxError):
-            assert await client._request("test")
+    with pytest.raises(PowerfoxError):
+        assert await powerfox_client._request("test")
 
 
 async def test_client_error() -> None:
@@ -115,7 +112,10 @@ async def test_client_error() -> None:
             assert await client._request("test")
 
 
-async def test_response_status_404(aresponses: ResponsesMockServer) -> None:
+async def test_response_status_404(
+    aresponses: ResponsesMockServer,
+    powerfox_client: Powerfox,
+) -> None:
     """Test HTTP 404 response handling."""
     aresponses.add(
         "backend.powerfox.energy",
@@ -123,7 +123,5 @@ async def test_response_status_404(aresponses: ResponsesMockServer) -> None:
         "GET",
         aresponses.Response(status=404),
     )
-    async with ClientSession() as session:
-        client = Powerfox(username="user", password="pass", session=session)
-        with pytest.raises(PowerfoxConnectionError):
-            assert await client._request("test")
+    with pytest.raises(PowerfoxConnectionError):
+        assert await powerfox_client._request("test")

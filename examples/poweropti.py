@@ -1,5 +1,4 @@
 """Asynchronous Python client for Powerfox."""
-# ruff: noqa: S106
 import asyncio
 
 from powerfox import Powerfox
@@ -8,8 +7,8 @@ from powerfox import Powerfox
 async def main() -> None:
     """Show example on getting Powerfox data."""
     async with Powerfox(username="EMAIL_ADDRESS", password="PASSWORD") as client:
-        devices = await client.all_devices()
-        print(devices)
+        poweropti = await client.device(device_id="DEVICE_ID")
+        print(poweropti)
 
 
 if __name__ == "__main__":

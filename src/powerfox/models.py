@@ -25,8 +25,42 @@ class Device(DataClassORJSONMixin):
     name: str | None = field(metadata=field_options(alias="Name"), default=None)
 
 
-# class Power
+@dataclass
+class Poweropti(DataClassORJSONMixin):
+    """Object representing a Poweropti device."""
 
-# class Heat
+    outdated: bool = field(metadata=field_options(alias="Outdated"))
+    timestamp: datetime = field(
+        metadata=field_options(
+            alias="Timestamp",
+            deserialize=lambda x: datetime.fromtimestamp(x, tz=UTC),
+        )
+    )
 
-# class Water
+
+@dataclass
+class PowerMeter(Poweropti):
+    """Object representing a Power device."""
+
+    power: int = field(metadata=field_options(alias="Watt"))
+    energy_usage: float = field(metadata=field_options(alias="A_Plus"))
+    energy_return: float = field(metadata=field_options(alias="A_Minus"))
+    energy_usage_high_tariff: float | None = field(
+        metadata=field_options(alias="A_Plus_HT"), default=None
+    )
+    energy_usage_low_tariff: float | None = field(
+        metadata=field_options(alias="A_Plus_NT"), default=None
+    )
+
+
+# @dataclass
+# class HeatMeter(Poweropti):
+#     """Object representing a Heat device."""
+
+
+@dataclass
+class WaterMeter(Poweropti):
+    """Object representing a Water device."""
+
+    cold_water: float = field(metadata=field_options(alias="CubicMeterCold"))
+    warm_water: float = field(metadata=field_options(alias="CubicMeterWarm"))
