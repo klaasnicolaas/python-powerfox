@@ -25,7 +25,7 @@ Asynchronous Python client for [Powerfox][poweropti] devices (poweropti's).
 
 A python package with which you can read the data from a [poweropti][poweropti]
 device, via your Powerfox account (cloud polling). [Powerfox][powerfox] has various
-poweropti devices on the market that you can use with a power, heater and water meter.
+poweropti devices on the market that you can use with a power, heat and water meter.
 
 ## Installation
 
