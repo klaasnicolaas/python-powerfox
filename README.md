@@ -45,33 +45,33 @@ pip install powerfox
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| `device_id` | Str | The unique identifier of the device. |
-| `name` | Str | The name of the device. |
-| `date_added` | Datetime | The date the device was added to your account. |
-| `main_device` | Bool | If the device is the main device. |
-| `bidirectional` | Bool | If the device is bidirectional. |
-| `division` | Int | The division number of the device. |
+| `device_id` | `str` | The unique identifier of the device. |
+| `name` | `str` | The name of the device. |
+| `date_added` | `datetime` | The date the device was added to your account. |
+| `main_device` | `bool` | If the device is the main device. |
+| `bidirectional` | `bool` | If the device is bidirectional. |
+| `division` | `int` | The division number of the device. |
 
 ### Poweropti for Power meters
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| `outdated` | Bool | If the data from the device is outdated. |
-| `timestamp` | Datetime | The timestamp of the data. |
-| `power` | Int | The amount of power used in W. |
-| `energy_usage` | Float | The amount of energy used (from the grid) in kWh. |
-| `energy_return` | Float | The amount of energy returned (to the grid) in kWh. |
-| `energy_usage_high_tariff` | Float | The amount of energy used in kWh during high tariff. |
-| `energy_usage_low_tariff` | Float | The amount of energy used in kWh during low tariff. |
+| `outdated` | `bool` | If the data from the device is outdated. |
+| `timestamp` | `datetime` | The timestamp of the data. |
+| `power` | `int` | The amount of power used in W. |
+| `energy_usage` | `float` | The amount of energy used (from the grid) in kWh. |
+| `energy_return` | `float` | The amount of energy returned (to the grid) in kWh. |
+| `energy_usage_high_tariff` | `float` | The amount of energy used in kWh during high tariff. |
+| `energy_usage_low_tariff` | `float` | The amount of energy used in kWh during low tariff. |
 
 ### Poweropti for Water meters
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| `outdated` | Bool | If the data from the device is outdated. |
-| `timestamp` | Datetime | The timestamp of the data. |
-| `cold_water` | Float | The amount of cold water used in m³. |
-| `warm_water` | Float | The amount of warm water used in m³. |
+| `outdated` | `bool` | If the data from the device is outdated. |
+| `timestamp` | `datetime` | The timestamp of the data. |
+| `cold_water` | `float` | The amount of cold water used in m³. |
+| `warm_water` | `float` | The amount of warm water used in m³. |
 </details>
 
 ### Example
