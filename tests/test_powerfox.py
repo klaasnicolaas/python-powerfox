@@ -93,7 +93,6 @@ async def test_content_type(
         aresponses.Response(
             status=200,
             headers={"Content-Type": "text/html"},
-            text=load_fixtures("all_devices.json"),
         ),
     )
     with pytest.raises(PowerfoxError):
