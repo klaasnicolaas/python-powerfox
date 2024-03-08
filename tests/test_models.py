@@ -1,4 +1,5 @@
 """Test the models for Powerfox."""
+
 from aresponses import ResponsesMockServer
 from syrupy.assertion import SnapshotAssertion
 

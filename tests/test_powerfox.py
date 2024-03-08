@@ -1,4 +1,5 @@
 """Basic tests for Powerfox."""
+
 # pylint: disable=protected-access
 import asyncio
 from unittest.mock import patch
@@ -103,11 +104,14 @@ async def test_client_error() -> None:
     """Test client error is handled correctly."""
     async with ClientSession() as session:
         client = Powerfox(username="user", password="pass", session=session)
-        with patch.object(
-            session,
-            "request",
-            side_effect=ClientError,
-        ), pytest.raises(PowerfoxConnectionError):
+        with (
+            patch.object(
+                session,
+                "request",
+                side_effect=ClientError,
+            ),
+            pytest.raises(PowerfoxConnectionError),
+        ):
             assert await client._request("test")
 
 

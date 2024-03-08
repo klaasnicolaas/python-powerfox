@@ -1,4 +1,5 @@
 """Asynchronous Python client for Powerfox."""
+
 from pathlib import Path
 
 
