@@ -1,4 +1,5 @@
 """Asynchronous Python client for Powerfox."""
+
 import asyncio
 
 from powerfox import Powerfox
