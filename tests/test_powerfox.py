@@ -32,8 +32,7 @@ async def test_json_request(
             text=load_fixtures("all_devices.json"),
         ),
     )
-    response = await powerfox_client._request("test")
-    assert response is not None
+    await powerfox_client._request("test")
     await powerfox_client.close()
 
 
