@@ -42,7 +42,7 @@ class Powerfox:
         *,
         method: str = METH_GET,
         params: dict[str, Any] | None = None,
-    ) -> str:
+    ) -> Any:
         """Handle a request to the Powerfox API.
 
         Args:
