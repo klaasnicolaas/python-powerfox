@@ -3,7 +3,7 @@
 from aresponses import ResponsesMockServer
 from syrupy.assertion import SnapshotAssertion
 
-from powerfox import Device, Powerfox, PowerMeter, Poweropti, WaterMeter
+from powerfox import Device, DeviceType, Powerfox, PowerMeter, Poweropti, WaterMeter
 
 from . import load_fixtures
 
@@ -26,6 +26,11 @@ async def test_all_devices_data(
     )
     devices: list[Device] = await powerfox_client.all_devices()
     assert devices == snapshot
+
+    # Validate the human-readable property for each device
+    for device in devices:
+        assert isinstance(device.type, DeviceType)
+        assert device.type.human_readable
 
 
 async def test_power_meter_full_data(
