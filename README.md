@@ -52,8 +52,7 @@ pip install powerfox
 | `bidirectional` | `bool`       | If the device is bidirectional.                |
 | `type`          | `DeviceType` | The division number of the device.             |
 
-> [!NOTE]
-> `DeviceType` is an Enum based on the division number of the device. You can get a human readable name by calling `device.type.human_readable`.
+**Note**: `DeviceType` is an Enum based on the division number of the device. You can get a human readable name by calling `device.type.human_readable`.
 
 ### Poweropti for Power meters
 
