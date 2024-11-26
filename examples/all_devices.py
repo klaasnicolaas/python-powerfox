@@ -11,6 +11,10 @@ async def main() -> None:
         devices = await client.all_devices()
         print(devices)
 
+        # How to show humand readable device type
+        for device in devices:
+            print(device.type.human_readable)
+
 
 if __name__ == "__main__":
     asyncio.run(main())
