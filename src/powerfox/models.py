@@ -38,7 +38,7 @@ class DeviceType(int, Enum):
 class Device(DataClassORJSONMixin):
     """Object representing a Device from Powerfox."""
 
-    device_id: str = field(metadata=field_options(alias="DeviceId"))
+    id: str = field(metadata=field_options(alias="DeviceId"))
     date_added: datetime = field(
         metadata=field_options(
             alias="AccountAssociatedSince",
@@ -48,7 +48,7 @@ class Device(DataClassORJSONMixin):
     main_device: bool = field(metadata=field_options(alias="MainDevice"))
     bidirectional: bool = field(metadata=field_options(alias="Prosumer"))
     type: DeviceType = field(metadata=field_options(alias="Division"))
-    name: str | None = field(metadata=field_options(alias="Name"), default=None)
+    name: str = field(metadata=field_options(alias="Name"), default="Poweropti")
 
 
 @dataclass
