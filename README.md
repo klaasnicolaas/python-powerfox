@@ -43,14 +43,17 @@ pip install powerfox
 
 ### All Devices
 
-| Name | Type | Description |
-| :--- | :--- | :---------- |
-| `device_id` | `str` | The unique identifier of the device. |
-| `name` | `str` | The name of the device. |
-| `date_added` | `datetime` | The date the device was added to your account. |
-| `main_device` | `bool` | If the device is the main device. |
-| `bidirectional` | `bool` | If the device is bidirectional. |
-| `division` | `int` | The division number of the device. |
+| Name            | Type         | Description                                    |
+| :-------------- | :----------- | :--------------------------------------------- |
+| `device_id`     | `str`        | The unique identifier of the device.           |
+| `name`          | `str`        | The name of the device.                        |
+| `date_added`    | `datetime`   | The date the device was added to your account. |
+| `main_device`   | `bool`       | If the device is the main device.              |
+| `bidirectional` | `bool`       | If the device is bidirectional.                |
+| `type`          | `DeviceType` | The division number of the device.             |
+
+> [!NOTE]
+> `DeviceType` is an Enum based on the division number of the device. You can get a human readable name by calling `device.type.human_readable`.
 
 ### Poweropti for Power meters
 
