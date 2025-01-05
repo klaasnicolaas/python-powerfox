@@ -3,7 +3,15 @@
 from aresponses import ResponsesMockServer
 from syrupy.assertion import SnapshotAssertion
 
-from powerfox import Device, DeviceType, Powerfox, PowerMeter, Poweropti, WaterMeter
+from powerfox import (
+    Device,
+    DeviceType,
+    HeatMeter,
+    Powerfox,
+    PowerMeter,
+    Poweropti,
+    WaterMeter,
+)
 
 from . import load_fixtures
 
@@ -96,3 +104,24 @@ async def test_water_meter_data(
     water_meter: Poweropti = await powerfox_client.device("water_meter_id")
     assert water_meter == snapshot
     assert isinstance(water_meter, WaterMeter)
+
+
+async def test_heat_meter_data(
+    aresponses: ResponsesMockServer,
+    snapshot: SnapshotAssertion,
+    powerfox_client: Powerfox,
+) -> None:
+    """Test heat meter data function."""
+    aresponses.add(
+        "backend.powerfox.energy",
+        "/api/2.0/my/heat_meter_id/current",
+        "GET",
+        aresponses.Response(
+            status=200,
+            headers={"Content-Type": "application/json"},
+            text=load_fixtures("heat_meter.json"),
+        ),
+    )
+    heat_meter: Poweropti = await powerfox_client.device("heat_meter_id")
+    assert heat_meter == snapshot
+    assert isinstance(heat_meter, HeatMeter)

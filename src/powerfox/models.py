@@ -79,9 +79,14 @@ class PowerMeter(Poweropti):
     )
 
 
-# @dataclass
-# class HeatMeter(Poweropti):
-#     """Object representing a Heat device."""
+@dataclass
+class HeatMeter(Poweropti):
+    """Object representing a Heat device."""
+
+    total_energy: int = field(metadata=field_options(alias="KiloWattHour"))
+    delta_energy: int = field(metadata=field_options(alias="DeltaKiloWattHour"))
+    total_volume: float = field(metadata=field_options(alias="CubicMeter"))
+    delta_volume: float = field(metadata=field_options(alias="DeltaCubicMeter"))
 
 
 @dataclass

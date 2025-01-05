@@ -5,12 +5,13 @@ from .exceptions import (
     PowerfoxConnectionError,
     PowerfoxError,
 )
-from .models import Device, DeviceType, PowerMeter, Poweropti, WaterMeter
+from .models import Device, DeviceType, HeatMeter, PowerMeter, Poweropti, WaterMeter
 from .powerfox import Powerfox
 
 __all__ = [
     "Device",
     "DeviceType",
+    "HeatMeter",
     "PowerMeter",
     "Powerfox",
     "PowerfoxAuthenticationError",
