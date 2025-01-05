@@ -56,24 +56,36 @@ pip install powerfox
 
 ### Poweropti for Power meters
 
-| Name | Type | Description |
-| :--- | :--- | :---------- |
-| `outdated` | `bool` | If the data from the device is outdated. |
-| `timestamp` | `datetime` | The timestamp of the data. |
-| `power` | `int` | The amount of power used in W. |
-| `energy_usage` | `float` | The amount of energy used (from the grid) in kWh. |
-| `energy_return` | `float` | The amount of energy returned (to the grid) in kWh. |
-| `energy_usage_high_tariff` | `float` | The amount of energy used in kWh during high tariff. |
-| `energy_usage_low_tariff` | `float` | The amount of energy used in kWh during low tariff. |
+| Name                       | Type       | Description                                          |
+| :------------------------- | :--------- | :--------------------------------------------------- |
+| `outdated`                 | `bool`     | If the data from the device is outdated.             |
+| `timestamp`                | `datetime` | The timestamp of the data.                           |
+| `power`                    | `int`      | The amount of power used in W.                       |
+| `energy_usage`             | `float`    | The amount of energy used (from the grid) in kWh.    |
+| `energy_return`            | `float`    | The amount of energy returned (to the grid) in kWh.  |
+| `energy_usage_high_tariff` | `float`    | The amount of energy used in kWh during high tariff. |
+| `energy_usage_low_tariff`  | `float`    | The amount of energy used in kWh during low tariff.  |
 
 ### Poweropti for Water meters
 
-| Name | Type | Description |
-| :--- | :--- | :---------- |
-| `outdated` | `bool` | If the data from the device is outdated. |
-| `timestamp` | `datetime` | The timestamp of the data. |
-| `cold_water` | `float` | The amount of cold water used in m³. |
-| `warm_water` | `float` | The amount of warm water used in m³. |
+| Name         | Type       | Description                              |
+| :----------- | :--------- | :--------------------------------------- |
+| `outdated`   | `bool`     | If the data from the device is outdated. |
+| `timestamp`  | `datetime` | The timestamp of the data.               |
+| `cold_water` | `float`    | The amount of cold water used in m³.     |
+| `warm_water` | `float`    | The amount of warm water used in m³.     |
+
+### Poweropti for Heat meters
+
+| Name           | Type       | Description                                              |
+| :------------- | :--------- | :------------------------------------------------------- |
+| `outdated`     | `bool`     | If the data from the device is outdated.                 |
+| `timestamp`    | `datetime` | The timestamp of the data.                               |
+| `total_energy` | `int`      | The total amount of energy used in kWh.                  |
+| `delta_energy` | `int`      | The amount of energy used since the last reading in kWh. |
+| `total_volume` | `float`    | The total amount of water used in m³.                    |
+| `delta_volume` | `float`    | The amount of water used since the last reading in m³.   |
+
 </details>
 
 ### Example
