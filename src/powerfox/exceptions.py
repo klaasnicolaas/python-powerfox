@@ -11,3 +11,7 @@ class PowerfoxConnectionError(PowerfoxError):
 
 class PowerfoxAuthenticationError(PowerfoxError):
     """Powerfox authentication exception."""
+
+
+class PowerfoxNoDataError(PowerfoxError):
+    """Powerfox no data exception."""

@@ -18,6 +18,7 @@ from .exceptions import (
     PowerfoxAuthenticationError,
     PowerfoxConnectionError,
     PowerfoxError,
+    PowerfoxNoDataError,
 )
 from .models import Device, Poweropti
 
@@ -125,6 +126,9 @@ class Powerfox:
 
         """
         response = await self._request("my/all/devices")
+        if response == "[]":
+            msg = "No Poweropti devices found."
+            raise PowerfoxNoDataError(msg)
         return ORJSONDecoder(list[Device]).decode(response)
 
     async def device(self, device_id: str) -> Poweropti:
@@ -143,6 +147,9 @@ class Powerfox:
             f"my/{device_id}/current",
             params={"unit": "kwh"},
         )
+        if response == "{}":
+            msg = f"No data available for Poweropti device {device_id}."
+            raise PowerfoxNoDataError(msg)
         return ORJSONDecoder(
             Annotated[Poweropti, Discriminator(include_subtypes=True)]
         ).decode(response)
