@@ -32,7 +32,7 @@ class Powerfox:
     username: str
     password: str
 
-    request_timeout: float = 15.0
+    request_timeout: float = 30.0
     session: ClientSession | None = None
 
     _close_session: bool = False
