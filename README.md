@@ -32,6 +32,20 @@ poweropti devices on the market that you can use with a power, heat and water me
 pip install powerfox
 ```
 
+## Poweropti devices
+
+Not all Poweropti devices are supported currently. Check the list below to see if your
+device is working with this package. Or help us by testing a device and let us know if
+it works.
+
+| Device                | Type        | Supported  |
+| --------------------- | ----------- | ---------- |
+| PA 201901 / PA 201902 | Power meter | Yes        |
+| PB 202001             | Power meter | Yes        |
+| WA 201902             | Water meter | Yes        |
+| Powerfox FLOW         | Gas meter   | No         |
+| HA 201902             | Heat meter  | Yes        |
+
 ## Datasets
 
 - List of all your Poweropti devices linked to your account.
