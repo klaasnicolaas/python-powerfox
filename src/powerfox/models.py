@@ -69,8 +69,18 @@ class PowerMeter(Poweropti):
     """Object representing a Power device."""
 
     power: int = field(metadata=field_options(alias="Watt"))
-    energy_usage: float = field(metadata=field_options(alias="A_Plus"))
-    energy_return: float = field(metadata=field_options(alias="A_Minus"))
+    energy_usage: float | None = field(
+        metadata=field_options(
+            alias="A_Plus",
+            deserialize=lambda x: x if x != 0 else None,
+        ),
+    )
+    energy_return: float | None = field(
+        metadata=field_options(
+            alias="A_Minus",
+            deserialize=lambda x: x if x != 0 else None,
+        ),
+    )
     energy_usage_high_tariff: float | None = field(
         metadata=field_options(alias="A_Plus_HT"), default=None
     )
