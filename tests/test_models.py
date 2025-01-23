@@ -125,3 +125,26 @@ async def test_heat_meter_data(
     heat_meter: Poweropti = await powerfox_client.device("heat_meter_id")
     assert heat_meter == snapshot
     assert isinstance(heat_meter, HeatMeter)
+
+
+async def test_invalid_power_meter_data(
+    aresponses: ResponsesMockServer,
+    snapshot: SnapshotAssertion,
+    powerfox_client: Powerfox,
+) -> None:
+    """Test invalid power meter data function."""
+    aresponses.add(
+        "backend.powerfox.energy",
+        "/api/2.0/my/power_device_id/current",
+        "GET",
+        aresponses.Response(
+            status=200,
+            headers={"Content-Type": "application/json"},
+            text=load_fixtures("power_meter_invalid.json"),
+        ),
+    )
+    power_meter = await powerfox_client.device("power_device_id")
+    assert power_meter == snapshot
+    assert isinstance(power_meter, PowerMeter)
+    assert power_meter.energy_usage is None
+    assert power_meter.energy_return is None
