@@ -9,6 +9,9 @@
 # name: test_heat_meter_data
   HeatMeter(outdated=False, timestamp=datetime.datetime(2024, 12, 16, 22, 14, 59, tzinfo=datetime.timezone.utc), total_energy=66000, delta_energy=4, total_volume=4500.1, delta_volume=0.23999999999978172)
 # ---
+# name: test_invalid_power_meter_data
+  PowerMeter(outdated=False, timestamp=datetime.datetime(2023, 12, 20, 10, 48, 51, tzinfo=datetime.timezone.utc), power=111, energy_usage=None, energy_return=None, energy_usage_high_tariff=1111.111, energy_usage_low_tariff=1111.111)
+# ---
 # name: test_power_meter_data
   PowerMeter(outdated=False, timestamp=datetime.datetime(2023, 12, 20, 10, 48, 51, tzinfo=datetime.timezone.utc), power=111, energy_usage=1111.111, energy_return=111.111, energy_usage_high_tariff=None, energy_usage_low_tariff=None)
 # ---
