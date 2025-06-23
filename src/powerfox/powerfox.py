@@ -11,6 +11,7 @@ from typing import Annotated, Any, Self
 from aiohttp import BasicAuth, ClientError, ClientResponseError, ClientSession
 from aiohttp.hdrs import METH_GET
 from mashumaro.codecs.orjson import ORJSONDecoder
+from mashumaro.exceptions import SuitableVariantNotFoundError
 from mashumaro.types import Discriminator
 from yarl import URL
 
@@ -19,6 +20,7 @@ from .exceptions import (
     PowerfoxConnectionError,
     PowerfoxError,
     PowerfoxNoDataError,
+    PowerfoxUnsupportedDeviceError,
 )
 from .models import Device, Poweropti
 
@@ -150,9 +152,19 @@ class Powerfox:
         if response == "{}":
             msg = f"No data available for Poweropti device {device_id}."
             raise PowerfoxNoDataError(msg)
-        return ORJSONDecoder(
-            Annotated[Poweropti, Discriminator(include_subtypes=True)]
-        ).decode(response)
+
+        try:
+            return ORJSONDecoder(
+                Annotated[Poweropti, Discriminator(include_subtypes=True)]
+            ).decode(response)
+        except SuitableVariantNotFoundError as err:
+            data = ORJSONDecoder(dict).decode(response)
+            division = data.get("Division", "unknown")
+            msg = (
+                "Unsupported device type received "
+                f"(Division={division}) for device {device_id}."
+            )
+            raise PowerfoxUnsupportedDeviceError(msg) from err
 
     async def close(self) -> None:
         """Close open client session."""

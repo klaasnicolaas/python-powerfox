@@ -21,5 +21,13 @@
     "MainDevice": true,
     "Prosumer": false,
     "Division": 1
+  },
+  {
+    "DeviceId": "9x9x1f12flow",
+    "Name": "FLOW",
+    "AccountAssociatedSince": 1664702555,
+    "MainDevice": true,
+    "Prosumer": false,
+    "Division": 4
   }
 ]

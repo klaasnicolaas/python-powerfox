@@ -15,3 +15,7 @@ class PowerfoxAuthenticationError(PowerfoxError):
 
 class PowerfoxNoDataError(PowerfoxError):
     """Powerfox no data exception."""
+
+
+class PowerfoxUnsupportedDeviceError(PowerfoxError):
+    """Powerfox unsupported device exception."""

@@ -4,6 +4,7 @@
     Device(id='9x9x1f12xx3x', date_added=datetime.datetime(2022, 10, 2, 9, 22, 35, tzinfo=datetime.timezone.utc), main_device=True, bidirectional=True, type=<DeviceType.POWER_METER: 0>, name='Wohnung unten'),
     Device(id='9x9x1f12xx2x', date_added=datetime.datetime(2022, 10, 2, 9, 22, 35, tzinfo=datetime.timezone.utc), main_device=True, bidirectional=True, type=<DeviceType.POWER_METER: 0>, name='Wohnung oben'),
     Device(id='9x9x1f12xx1x', date_added=datetime.datetime(2022, 10, 2, 9, 22, 35, tzinfo=datetime.timezone.utc), main_device=True, bidirectional=False, type=<DeviceType.COLD_WATER_METER: 1>, name='Poweropti'),
+    Device(id='9x9x1f12flow', date_added=datetime.datetime(2022, 10, 2, 9, 22, 35, tzinfo=datetime.timezone.utc), main_device=True, bidirectional=False, type=<DeviceType.GAS_METER: 4>, name='FLOW'),
   ])
 # ---
 # name: test_heat_meter_data
