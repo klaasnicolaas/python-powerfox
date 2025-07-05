@@ -148,3 +148,23 @@ async def test_invalid_power_meter_data(
     assert isinstance(power_meter, PowerMeter)
     assert power_meter.energy_usage is None
     assert power_meter.energy_return is None
+
+
+async def test_raw_response_data(
+    aresponses: ResponsesMockServer,
+    snapshot: SnapshotAssertion,
+    powerfox_client: Powerfox,
+) -> None:
+    """Test raw response data function."""
+    aresponses.add(
+        "backend.powerfox.energy",
+        "/api/2.0/my/power_device_id/current",
+        "GET",
+        aresponses.Response(
+            status=200,
+            headers={"Content-Type": "application/json"},
+            text=load_fixtures("power_meter.json"),
+        ),
+    )
+    raw_data = await powerfox_client.raw_device_data("power_device_id")
+    assert raw_data == snapshot

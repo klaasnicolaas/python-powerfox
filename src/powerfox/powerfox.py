@@ -126,6 +126,10 @@ class Powerfox:
         -------
             A list of all Poweropti devices.
 
+        Raises
+        ------
+            PowerfoxNoDataError: If no devices are found or the response is empty.
+
         """
         response = await self._request("my/all/devices")
         if response == "[]":
@@ -143,6 +147,10 @@ class Powerfox:
         Returns:
         -------
             Information about the Poweropti device.
+
+        Raises:
+        ------
+            PowerfoxNoDataError: If the response is empty or invalid JSON.
 
         """
         response = await self._request(
@@ -165,6 +173,33 @@ class Powerfox:
                 f"(Division={division}) for device {device_id}."
             )
             raise PowerfoxUnsupportedDeviceError(msg) from err
+
+    async def raw_device_data(self, device_id: str) -> dict[str, Any]:
+        """Get raw JSON data for a specific Poweropti device.
+
+        Args:
+        ----
+            device_id: The device ID to get information about.
+
+        Returns:
+        -------
+            The raw response data as a dictionary.
+
+        Raises:
+        ------
+            PowerfoxNoDataError: If the response is empty or invalid JSON.
+
+        """
+        response = await self._request(
+            f"my/{device_id}/current",
+            params={"unit": "kwh"},
+        )
+
+        data = ORJSONDecoder(dict).decode(response)
+        if not data:
+            msg = f"No data available for Poweropti device {device_id}."
+            raise PowerfoxNoDataError(msg)
+        return data
 
     async def close(self) -> None:
         """Close open client session."""
