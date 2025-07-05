@@ -126,6 +126,10 @@ class Powerfox:
         -------
             A list of all Poweropti devices.
 
+        Raises
+        ------
+            PowerfoxNoDataError: If no devices are found or the response is empty.
+
         """
         response = await self._request("my/all/devices")
         if response == "[]":
@@ -143,6 +147,10 @@ class Powerfox:
         Returns:
         -------
             Information about the Poweropti device.
+
+        Raises:
+        ------
+            PowerfoxNoDataError: If the response is empty or invalid JSON.
 
         """
         response = await self._request(
