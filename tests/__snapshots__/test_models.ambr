@@ -19,6 +19,15 @@
 # name: test_power_meter_full_data
   PowerMeter(outdated=False, timestamp=datetime.datetime(2023, 12, 20, 10, 48, 51, tzinfo=datetime.timezone.utc), power=111, energy_usage=1111.111, energy_return=111.111, energy_usage_high_tariff=1111.111, energy_usage_low_tariff=0.011)
 # ---
+# name: test_raw_response_data
+  dict({
+    'A_Minus': 111.111,
+    'A_Plus': 1111.111,
+    'Outdated': False,
+    'Timestamp': 1703069331,
+    'Watt': 111,
+  })
+# ---
 # name: test_water_meter_data
   WaterMeter(outdated=False, timestamp=datetime.datetime(2023, 12, 20, 10, 45, 7, tzinfo=datetime.timezone.utc), cold_water=1111.111, warm_water=0.0)
 # ---

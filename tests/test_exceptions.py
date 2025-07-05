@@ -45,9 +45,11 @@ async def test_no_poweropti_devices(
         assert await powerfox_client.all_devices()
 
 
+@pytest.mark.parametrize("method_name", ["device", "raw_device_data"])
 async def test_no_poweropti_data(
     aresponses: ResponsesMockServer,
     powerfox_client: Powerfox,
+    method_name: str,
 ) -> None:
     """Test no Poweropti data is found."""
     aresponses.add(
@@ -59,8 +61,9 @@ async def test_no_poweropti_data(
             headers={"Content-Type": "application/json"},
         ),
     )
+    method = getattr(powerfox_client, method_name)
     with pytest.raises(PowerfoxNoDataError):
-        assert await powerfox_client.device("test")
+        await method("test")
 
 
 async def test_unsupported_poweropti_device(
