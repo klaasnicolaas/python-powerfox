@@ -9,7 +9,7 @@ on:
       - published
 
 env:
-  DEFAULT_PYTHON: "3.11"
+  DEFAULT_PYTHON: "3.12"
 
 jobs:
   release:
@@ -49,6 +49,8 @@ jobs:
     name: 🐦 Tweet the release
     runs-on: ubuntu-latest
     needs: release
+    permissions:
+      contents: read
     steps:
       - uses: Eomm/why-don-t-you-tweet@v2.0.0
         with:
