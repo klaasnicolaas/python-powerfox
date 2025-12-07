@@ -7,6 +7,9 @@
     Device(id='9x9x1f12flow', date_added=datetime.datetime(2022, 10, 2, 9, 22, 35, tzinfo=datetime.timezone.utc), main_device=True, bidirectional=False, type=<DeviceType.GAS_METER: 4>, name='FLOW'),
   ])
 # ---
+# name: test_gas_report_data
+  DeviceReport(gas=GasReport(total_delta=11.32, sum=11.32, total_delta_currency=17.1412903225806, current_consumption_kwh=1.2, current_consumption=0.12, consumption_kwh=113.2, consumption=11.32, max=1.89, max_currency=2.84172043010753, max_consumption=1.89, max_consumption_kwh=18.9, min=0.01, min_consumption=0.01, min_consumption_kwh=0.1, avg_delta=0.471666666666667, avg_consumption=0.471666666666667, avg_consumption_kwh=4.71666666666667, meter_readings=[], report_values=[ReportValue(device_id='9x9x1f12xx5x', timestamp=datetime.datetime(2025, 11, 28, 8, 0, tzinfo=datetime.timezone.utc), complete=True, values_type=1, delta=0.11, delta_ht=None, delta_nt=None, delta_currency=0.171720430107527, total_delta=11.0, total_delta_currency=17.1412903225806, consumption=0.11, consumption_kwh=1.1, current_consumption=0.12, current_consumption_kwh=1.2), ReportValue(device_id='9x9x1f12xx5x', timestamp=datetime.datetime(2025, 11, 28, 7, 0, tzinfo=datetime.timezone.utc), complete=True, values_type=1, delta=0.07, delta_ht=None, delta_nt=None, delta_currency=0.111720430107527, total_delta=7.0, total_delta_currency=None, consumption=0.07, consumption_kwh=0.7, current_consumption=None, current_consumption_kwh=None)], sum_currency=17.1412903225806), consumption=None, feed_in=None)
+# ---
 # name: test_heat_meter_data
   HeatMeter(outdated=False, timestamp=datetime.datetime(2024, 12, 16, 22, 14, 59, tzinfo=datetime.timezone.utc), total_energy=66000, delta_energy=4, total_volume=4500.1, delta_volume=0.23999999999978172)
 # ---
@@ -18,6 +21,9 @@
 # ---
 # name: test_power_meter_full_data
   PowerMeter(outdated=False, timestamp=datetime.datetime(2023, 12, 20, 10, 48, 51, tzinfo=datetime.timezone.utc), power=111, energy_usage=1111.111, energy_return=111.111, energy_usage_high_tariff=1111.111, energy_usage_low_tariff=0.011)
+# ---
+# name: test_power_report_data
+  DeviceReport(gas=None, consumption=EnergyReport(start_time=datetime.datetime(2025, 12, 5, 22, 45, tzinfo=datetime.timezone.utc), start_time_currency=datetime.datetime(2025, 12, 5, 22, 45, tzinfo=datetime.timezone.utc), sum=0.12, max=0.013, max_currency=0.006458172043010753, meter_readings=[], report_values=[ReportValue(device_id='9x9x1f12xx6x', timestamp=datetime.datetime(2025, 12, 6, 22, 0, tzinfo=datetime.timezone.utc), complete=True, values_type=1, delta=0.0, delta_ht=0.0, delta_nt=0.0, delta_currency=0.0013440860215053765, total_delta=None, total_delta_currency=None, consumption=None, consumption_kwh=None, current_consumption=None, current_consumption_kwh=None), ReportValue(device_id='9x9x1f12xx6x', timestamp=datetime.datetime(2025, 12, 6, 21, 0, tzinfo=datetime.timezone.utc), complete=True, values_type=1, delta=0.009, delta_ht=0.009, delta_nt=0.0, delta_currency=0.005298172043010753, total_delta=None, total_delta_currency=None, consumption=None, consumption_kwh=None, current_consumption=None, current_consumption_kwh=None)], sum_currency=0.09864408602150536), feed_in=EnergyReport(start_time=datetime.datetime(2025, 12, 5, 22, 45, tzinfo=datetime.timezone.utc), start_time_currency=None, sum=0.0, max=0.0, max_currency=0.0, meter_readings=[], report_values=[ReportValue(device_id='9x9x1f12xx6x', timestamp=datetime.datetime(2025, 12, 6, 22, 0, tzinfo=datetime.timezone.utc), complete=True, values_type=2, delta=0.0, delta_ht=None, delta_nt=None, delta_currency=0.0, total_delta=None, total_delta_currency=None, consumption=None, consumption_kwh=None, current_consumption=None, current_consumption_kwh=None)], sum_currency=0.0))
 # ---
 # name: test_raw_response_data
   dict({

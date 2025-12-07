@@ -1,0 +1,52 @@
+{
+  "Consumption": {
+    "StartTime": 1764974700,
+    "StartTimeCurrency": 1764974700,
+    "Sum": 0.12,
+    "Max": 0.013,
+    "MaxCurrency": 0.006458172043010753,
+    "MeterReadings": [],
+    "ReportValues": [
+      {
+        "DeviceId": "9x9x1f12xx6x",
+        "Timestamp": 1765058400,
+        "Complete": true,
+        "Delta": 0,
+        "DeltaHT": 0,
+        "DeltaNT": 0,
+        "DeltaCurrency": 0.0013440860215053765,
+        "ValuesType": 1
+      },
+      {
+        "DeviceId": "9x9x1f12xx6x",
+        "Timestamp": 1765054800,
+        "Complete": true,
+        "Delta": 0.009,
+        "DeltaHT": 0.009,
+        "DeltaNT": 0,
+        "DeltaCurrency": 0.005298172043010753,
+        "ValuesType": 1
+      }
+    ],
+    "SumCurrency": 0.09864408602150536
+  },
+  "FeedIn": {
+    "StartTime": 1764974700,
+    "StartTimeCurrency": 9223372036854775807,
+    "Sum": 0,
+    "Max": 0,
+    "MaxCurrency": 0,
+    "MeterReadings": [],
+    "ReportValues": [
+      {
+        "DeviceId": "9x9x1f12xx6x",
+        "Timestamp": 1765058400,
+        "Complete": true,
+        "Delta": 0,
+        "DeltaCurrency": 0,
+        "ValuesType": 2
+      }
+    ],
+    "SumCurrency": 0
+  }
+}

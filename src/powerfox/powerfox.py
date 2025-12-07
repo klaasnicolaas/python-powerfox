@@ -22,7 +22,7 @@ from .exceptions import (
     PowerfoxNoDataError,
     PowerfoxUnsupportedDeviceError,
 )
-from .models import Device, Poweropti
+from .models import Device, DeviceReport, Poweropti
 
 VERSION = metadata.version(__package__)
 
@@ -173,6 +173,59 @@ class Powerfox:
                 f"(Division={division}) for device {device_id}."
             )
             raise PowerfoxUnsupportedDeviceError(msg) from err
+
+    async def report(
+        self,
+        device_id: str,
+        *,
+        year: int | None = None,
+        month: int | None = None,
+        day: int | None = None,
+    ) -> DeviceReport:
+        """Get report information for a specific device.
+
+        Args:
+        ----
+            device_id: The device ID to get report data for.
+            year: Optional year to filter report data.
+            month: Optional month to filter report data (requires year).
+            day: Optional day to filter report data (requires year and month).
+
+        Returns:
+        -------
+            Report data for the requested device.
+
+        Raises:
+        ------
+            PowerfoxNoDataError: If the response is empty or invalid JSON.
+
+        """
+        if month is not None and year is None:
+            msg = "Parameter 'month' requires 'year' to be set."
+            raise ValueError(msg)
+        if day is not None and (year is None or month is None):
+            msg = "Parameter 'day' requires both 'year' and 'month' to be set."
+            raise ValueError(msg)
+
+        params: dict[str, Any] = {}
+        if year is not None:
+            params["year"] = year
+        if month is not None:
+            params["month"] = month
+        if day is not None:
+            params["day"] = day
+
+        response = await self._request(
+            f"my/{device_id}/report",
+            params=params or None,
+        )
+
+        data = ORJSONDecoder(dict).decode(response)
+        if not data:
+            msg = f"No report data available for Poweropti device {device_id}."
+            raise PowerfoxNoDataError(msg)
+
+        return ORJSONDecoder(DeviceReport).decode(response)
 
     async def raw_device_data(self, device_id: str) -> dict[str, Any]:
         """Get raw JSON data for a specific Poweropti device.

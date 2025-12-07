@@ -1,10 +1,12 @@
 """Test the models for Powerfox."""
 
+import pytest
 from aresponses import ResponsesMockServer
 from syrupy.assertion import SnapshotAssertion
 
 from powerfox import (
     Device,
+    DeviceReport,
     DeviceType,
     HeatMeter,
     Powerfox,
@@ -12,6 +14,7 @@ from powerfox import (
     Poweropti,
     WaterMeter,
 )
+from powerfox.models import _deserialize_timestamp
 
 from . import load_fixtures
 
@@ -168,3 +171,88 @@ async def test_raw_response_data(
     )
     raw_data = await powerfox_client.raw_device_data("power_device_id")
     assert raw_data == snapshot
+
+
+async def test_gas_report_data(
+    aresponses: ResponsesMockServer,
+    snapshot: SnapshotAssertion,
+    powerfox_client: Powerfox,
+) -> None:
+    """Test gas report data function."""
+    aresponses.add(
+        "backend.powerfox.energy",
+        "/api/2.0/my/flow_device_id/report",
+        "GET",
+        aresponses.Response(
+            status=200,
+            headers={"Content-Type": "application/json"},
+            text=load_fixtures("gas_report.json"),
+        ),
+    )
+    report: DeviceReport = await powerfox_client.report("flow_device_id")
+    assert report == snapshot
+    assert report.gas
+    assert report.gas.report_values
+
+
+async def test_power_report_data(
+    aresponses: ResponsesMockServer,
+    snapshot: SnapshotAssertion,
+    powerfox_client: Powerfox,
+) -> None:
+    """Test powermeter report data function."""
+    aresponses.add(
+        "backend.powerfox.energy",
+        "/api/2.0/my/power_device_id/report",
+        "GET",
+        aresponses.Response(
+            status=200,
+            headers={"Content-Type": "application/json"},
+            text=load_fixtures("power_report.json"),
+        ),
+    )
+    report: DeviceReport = await powerfox_client.report("power_device_id")
+    assert report == snapshot
+    assert report.consumption
+    assert report.feed_in
+
+
+async def test_report_with_filters(
+    aresponses: ResponsesMockServer,
+    powerfox_client: Powerfox,
+) -> None:
+    """Test report call with date filters."""
+    aresponses.add(
+        "backend.powerfox.energy",
+        "/api/2.0/my/filter_device/report",
+        "GET",
+        aresponses.Response(
+            status=200,
+            headers={"Content-Type": "application/json"},
+            text=load_fixtures("gas_report.json"),
+        ),
+    )
+    report = await powerfox_client.report(
+        "filter_device",
+        year=2024,
+        month=12,
+        day=6,
+    )
+    assert report.gas
+
+
+async def test_report_month_requires_year(powerfox_client: Powerfox) -> None:
+    """Test passing month without year raises ValueError."""
+    with pytest.raises(ValueError, match=r"month.*year"):
+        await powerfox_client.report("filter_device", month=12)
+
+
+async def test_report_day_requires_month(powerfox_client: Powerfox) -> None:
+    """Test passing day without month/year raises ValueError."""
+    with pytest.raises(ValueError, match=r"day.*year.*month"):
+        await powerfox_client.report("filter_device", year=2024, day=6)
+
+
+def test_deserialize_timestamp_none() -> None:
+    """Ensure timestamp helper handles None values."""
+    assert _deserialize_timestamp(None) is None
