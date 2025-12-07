@@ -16,7 +16,7 @@
 [![Build Status][build-shield]][build-url]
 [![Typing Status][typing-shield]][typing-url]
 [![Code Coverage][codecov-shield]][codecov-url]
-
+[![OpenSSF Scorecard][scorecard-shield]][scorecard-url]
 
 Asynchronous Python client for [Powerfox][poweropti] devices (poweropti's).
 
@@ -316,6 +316,8 @@ SOFTWARE.
 [python-versions-shield]: https://img.shields.io/pypi/pyversions/powerfox
 [releases-shield]: https://img.shields.io/github/release/klaasnicolaas/python-powerfox.svg
 [releases]: https://github.com/klaasnicolaas/python-powerfox/releases
+[scorecard-shield]: https://api.scorecard.dev/projects/github.com/klaasnicolaas/python-powerfox/badge
+[scorecard-url]: https://scorecard.dev/viewer/?uri=github.com/klaasnicolaas/python-powerfox
 [typing-shield]: https://github.com/klaasnicolaas/python-powerfox/actions/workflows/typing.yaml/badge.svg
 [typing-url]: https://github.com/klaasnicolaas/python-powerfox/actions/workflows/typing.yaml
 
