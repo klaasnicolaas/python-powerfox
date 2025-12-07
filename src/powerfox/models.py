@@ -5,9 +5,20 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from enum import Enum
+from typing import Any
 
 from mashumaro import field_options
 from mashumaro.mixins.orjson import DataClassORJSONMixin
+
+
+def _deserialize_timestamp(value: int | None) -> datetime | None:
+    """Convert a timestamp to a datetime object."""
+    if value is None:
+        return None
+    try:
+        return datetime.fromtimestamp(value, tz=UTC)
+    except (OverflowError, OSError, ValueError):
+        return None
 
 
 class DeviceType(int, Enum):
@@ -105,3 +116,203 @@ class WaterMeter(Poweropti):
 
     cold_water: float = field(metadata=field_options(alias="CubicMeterCold"))
     warm_water: float = field(metadata=field_options(alias="CubicMeterWarm"))
+
+
+@dataclass
+class ReportValue(DataClassORJSONMixin):
+    """Object representing a report value entry."""
+
+    device_id: str = field(metadata=field_options(alias="DeviceId"))
+    timestamp: datetime = field(
+        metadata=field_options(
+            alias="Timestamp",
+            deserialize=lambda x: datetime.fromtimestamp(x, tz=UTC),
+        )
+    )
+    complete: bool = field(metadata=field_options(alias="Complete"))
+    values_type: int | None = field(
+        metadata=field_options(alias="ValuesType"),
+        default=None,
+    )
+    delta: float | None = field(
+        metadata=field_options(alias="Delta"),
+        default=None,
+    )
+    delta_ht: float | None = field(
+        metadata=field_options(alias="DeltaHT"),
+        default=None,
+    )
+    delta_nt: float | None = field(
+        metadata=field_options(alias="DeltaNT"),
+        default=None,
+    )
+    delta_currency: float | None = field(
+        metadata=field_options(alias="DeltaCurrency"),
+        default=None,
+    )
+    total_delta: float | None = field(
+        metadata=field_options(alias="TotalDelta"),
+        default=None,
+    )
+    total_delta_currency: float | None = field(
+        metadata=field_options(alias="TotalDeltaCurrency"),
+        default=None,
+    )
+    consumption: float | None = field(
+        metadata=field_options(alias="Consumption"),
+        default=None,
+    )
+    consumption_kwh: float | None = field(
+        metadata=field_options(alias="ConsumptionKWh"),
+        default=None,
+    )
+    current_consumption: float | None = field(
+        metadata=field_options(alias="CurrentConsumption"),
+        default=None,
+    )
+    current_consumption_kwh: float | None = field(
+        metadata=field_options(alias="CurrentConsumptionKwh"),
+        default=None,
+    )
+
+
+@dataclass
+class GasReport(DataClassORJSONMixin):
+    """Object representing a gas report."""
+
+    total_delta: float = field(metadata=field_options(alias="TotalDelta"))
+    sum: float = field(metadata=field_options(alias="Sum"))
+    total_delta_currency: float | None = field(
+        metadata=field_options(alias="TotalDeltaCurrency"),
+        default=None,
+    )
+    current_consumption_kwh: float | None = field(
+        metadata=field_options(alias="CurrentConsumptionKwh"),
+        default=None,
+    )
+    current_consumption: float | None = field(
+        metadata=field_options(alias="CurrentConsumption"),
+        default=None,
+    )
+    consumption_kwh: float | None = field(
+        metadata=field_options(alias="ConsumptionKWh"),
+        default=None,
+    )
+    consumption: float | None = field(
+        metadata=field_options(alias="Consumption"),
+        default=None,
+    )
+    max: float | None = field(
+        metadata=field_options(alias="Max"),
+        default=None,
+    )
+    max_currency: float | None = field(
+        metadata=field_options(alias="MaxCurrency"),
+        default=None,
+    )
+    max_consumption: float | None = field(
+        metadata=field_options(alias="MaxConsumption"),
+        default=None,
+    )
+    max_consumption_kwh: float | None = field(
+        metadata=field_options(alias="MaxConsumptionKWh"),
+        default=None,
+    )
+    min: float | None = field(
+        metadata=field_options(alias="Min"),
+        default=None,
+    )
+    min_consumption: float | None = field(
+        metadata=field_options(alias="MinConsumption"),
+        default=None,
+    )
+    min_consumption_kwh: float | None = field(
+        metadata=field_options(alias="MinConsumptionKWh"),
+        default=None,
+    )
+    avg_delta: float | None = field(
+        metadata=field_options(alias="AvgDelta"),
+        default=None,
+    )
+    avg_consumption: float | None = field(
+        metadata=field_options(alias="AvgConsumption"),
+        default=None,
+    )
+    avg_consumption_kwh: float | None = field(
+        metadata=field_options(alias="AvgConsumptionKWh"),
+        default=None,
+    )
+    meter_readings: list[dict[str, Any]] = field(
+        default_factory=list,
+        metadata=field_options(alias="MeterReadings"),
+    )
+    report_values: list[ReportValue] = field(
+        default_factory=list,
+        metadata=field_options(alias="ReportValues"),
+    )
+    sum_currency: float | None = field(
+        metadata=field_options(alias="SumCurrency"),
+        default=None,
+    )
+
+
+@dataclass
+class EnergyReport(DataClassORJSONMixin):
+    """Object representing an energy report section."""
+
+    start_time: datetime | None = field(
+        metadata=field_options(
+            alias="StartTime",
+            deserialize=_deserialize_timestamp,
+        ),
+        default=None,
+    )
+    start_time_currency: datetime | None = field(
+        metadata=field_options(
+            alias="StartTimeCurrency",
+            deserialize=_deserialize_timestamp,
+        ),
+        default=None,
+    )
+    sum: float | None = field(
+        metadata=field_options(alias="Sum"),
+        default=None,
+    )
+    max: float | None = field(
+        metadata=field_options(alias="Max"),
+        default=None,
+    )
+    max_currency: float | None = field(
+        metadata=field_options(alias="MaxCurrency"),
+        default=None,
+    )
+    meter_readings: list[dict[str, Any]] = field(
+        default_factory=list,
+        metadata=field_options(alias="MeterReadings"),
+    )
+    report_values: list[ReportValue] = field(
+        default_factory=list,
+        metadata=field_options(alias="ReportValues"),
+    )
+    sum_currency: float | None = field(
+        metadata=field_options(alias="SumCurrency"),
+        default=None,
+    )
+
+
+@dataclass
+class DeviceReport(DataClassORJSONMixin):
+    """Object representing a report response."""
+
+    gas: GasReport | None = field(
+        default=None,
+        metadata=field_options(alias="Gas"),
+    )
+    consumption: EnergyReport | None = field(
+        default=None,
+        metadata=field_options(alias="Consumption"),
+    )
+    feed_in: EnergyReport | None = field(
+        default=None,
+        metadata=field_options(alias="FeedIn"),
+    )

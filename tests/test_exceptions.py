@@ -45,16 +45,19 @@ async def test_no_poweropti_devices(
         assert await powerfox_client.all_devices()
 
 
-@pytest.mark.parametrize("method_name", ["device", "raw_device_data"])
+@pytest.mark.parametrize("method_name", ["device", "raw_device_data", "report"])
 async def test_no_poweropti_data(
     aresponses: ResponsesMockServer,
     powerfox_client: Powerfox,
     method_name: str,
 ) -> None:
     """Test no Poweropti data is found."""
+    path = "/api/2.0/my/test/current"
+    if method_name == "report":
+        path = "/api/2.0/my/test/report"
     aresponses.add(
         "backend.powerfox.energy",
-        "/api/2.0/my/test/current",
+        path,
         "GET",
         aresponses.Response(
             text="{}",

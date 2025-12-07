@@ -1,0 +1,50 @@
+{
+  "Gas": {
+    "TotalDelta": 11.32,
+    "Sum": 11.32,
+    "TotalDeltaCurrency": 17.1412903225806,
+    "CurrentConsumptionKwh": 1.2,
+    "CurrentConsumption": 0.12,
+    "ConsumptionKWh": 113.2,
+    "Consumption": 11.32,
+    "Max": 1.89,
+    "MaxCurrency": 2.84172043010753,
+    "MaxConsumption": 1.89,
+    "MaxConsumptionKWh": 18.9,
+    "Min": 0.01,
+    "MinConsumption": 0.01,
+    "MinConsumptionKWh": 0.1,
+    "AvgDelta": 0.471666666666667,
+    "AvgConsumption": 0.471666666666667,
+    "AvgConsumptionKWh": 4.71666666666667,
+    "MeterReadings": [],
+    "ReportValues": [
+      {
+        "DeviceId": "9x9x1f12xx5x",
+        "Timestamp": 1764316800,
+        "Complete": true,
+        "Delta": 0.11,
+        "TotalDelta": 11,
+        "TotalDeltaCurrency": 17.1412903225806,
+        "DeltaCurrency": 0.171720430107527,
+        "Consumption": 0.11,
+        "ConsumptionKWh": 1.1,
+        "CurrentConsumption": 0.12,
+        "CurrentConsumptionKwh": 1.2,
+        "ValuesType": 1
+      },
+      {
+        "DeviceId": "9x9x1f12xx5x",
+        "Timestamp": 1764313200,
+        "Complete": true,
+        "Delta": 0.07,
+        "TotalDelta": 7,
+        "DeltaCurrency": 0.111720430107527,
+        "Consumption": 0.07,
+        "ConsumptionKWh": 0.7,
+        "ValuesType": 1
+      }
+    ],
+    "SumCurrency": 17.1412903225806
+  }
+}
