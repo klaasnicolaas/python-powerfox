@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
-from enum import Enum
+from enum import IntEnum
 from typing import Any
 
 from mashumaro import field_options
@@ -21,7 +21,7 @@ def _deserialize_timestamp(value: int | None) -> datetime | None:
         return None
 
 
-class DeviceType(int, Enum):
+class DeviceType(IntEnum):
     """Enum for the different device types."""
 
     NO_TYPE = -1
