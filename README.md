@@ -23,8 +23,9 @@ Asynchronous Python client for [Powerfox][poweropti] devices (poweropti's).
 ## About
 
 A python package with which you can read the data from a [poweropti][poweropti]
-device, via your Powerfox account (cloud polling). [Powerfox][powerfox] has various
-poweropti devices on the market that you can use with a power, heat and water meter.
+device, via your Powerfox account (cloud polling) or directly from the local network
+(local polling). [Powerfox][powerfox] has various poweropti devices on the market
+that you can use with a power, heat and water meter.
 
 ## Installation
 
@@ -38,19 +39,25 @@ Not all Poweropti devices are supported currently. Check the list below to see i
 device is working with this package. Or help us by testing a device and let us know if
 it works.
 
-| Device                | Type        | Supported  |
-| --------------------- | ----------- | ---------- |
-| PA 201901 / PA 201902 | Power meter | Yes        |
-| PB 202001             | Power meter | Yes        |
-| WA 201902             | Water meter | Yes        |
-| Powerfox FLOW         | Gas meter   | Yes (report) |
-| HA 201902             | Heat meter  | Yes        |
+| Device                | Type        | Cloud        | Local |
+| --------------------- | ----------- | ------------ | ----- |
+| PA 201901 / PA 201902 | Power meter | Yes          | Yes   |
+| PB 202001             | Power meter | Yes          | Yes   |
+| WA 201902             | Water meter | Yes          | No    |
+| Powerfox FLOW         | Gas meter   | Yes (report) | No    |
+| HA 201902             | Heat meter  | Yes          | No    |
 
 ## Datasets
+
+### Cloud API
 
 - `Powerfox.all_devices()` lists all devices linked to your account.
 - `Powerfox.device(...)` gives the realtime snapshot for a Poweropti device.
 - `Powerfox.report(...)` exposes hourly/daily blocks such as FLOW gas consumption.
+
+### Local API
+
+- `PowerfoxLocal.value()` retrieves real-time measurement data directly from the device.
 
 ### Device inventory (`all_devices`)
 
@@ -170,7 +177,24 @@ dataclass, which may contain:
 The `month` parameter requires `year`, and `day` requires both `year` and `month`. When
 no parameters are given the API returns the last 24 hours.
 
-### Example
+### Local interface data (`value`)
+
+The local interface is available on poweropti devices (PA201901, PA201902, PB202001)
+with firmware v2.02.07+ and the powerfox PRO Service enabled. It provides real-time
+measurement data over HTTP in the local network.
+
+| Field                      | Type       | Unit | Description                                     |
+| :------------------------- | :--------- | :--- | :---------------------------------------------- |
+| `timestamp`                | `datetime` | -    | Timestamp of the measurement (UTC).             |
+| `power`                    | `int`      | W    | Instantaneous power (positive=import, negative=export). |
+| `energy_usage`             | `int`      | Wh   | Total grid import meter reading.                |
+| `energy_usage_high_tariff` | `int`      | Wh   | Grid import tariff register 1.                  |
+| `energy_usage_low_tariff`  | `int`      | Wh   | Grid import tariff register 2.                  |
+| `energy_return`            | `int`      | Wh   | Total grid export meter reading.                |
+
+### Examples
+
+#### Cloud API
 
 ```python
 import asyncio
@@ -192,14 +216,50 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
+#### Local API
+
+```python
+import asyncio
+
+from powerfox import PowerfoxLocal
+
+
+async def main() -> None:
+    """Show example on getting data from a local poweropti."""
+    async with PowerfoxLocal(
+        host="IP_ADDRESS",
+        api_key="DEVICE_ID",
+    ) as client:
+        value = await client.value()
+        print(value)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
 More examples can be found in the [examples folder](./examples/).
 
 ### Class Parameters
+
+#### Powerfox (cloud)
 
 | Parameter | value Type | Description |
 | :-------- | :--------- | :---------- |
 | `username` | `str` | The email address of your Powerfox account. |
 | `password` | `str` | The password of your Powerfox account. |
+
+#### PowerfoxLocal (local)
+
+| Parameter | value Type | Description |
+| :-------- | :--------- | :---------- |
+| `host` | `str` | IP address or hostname of the poweropti device. |
+| `api_key` | `str` | The API key (default: the 12-character device ID). |
+
+> [!TIP]
+> The `api_key` is initially your device ID (e.g. `1097bd725557`). You can find it
+> on the sticker on your poweropti, in the powerfox app under device settings, or
+> programmatically via `Powerfox.all_devices()` (the `id` field).
 
 ## Contributing
 

@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from enum import IntEnum
-from typing import Any
+from typing import Any, ClassVar
 
 from mashumaro import field_options
 from mashumaro.mixins.orjson import DataClassORJSONMixin
@@ -316,3 +316,40 @@ class DeviceReport(DataClassORJSONMixin):
         default=None,
         metadata=field_options(alias="FeedIn"),
     )
+
+
+@dataclass
+class LocalResponse(DataClassORJSONMixin):
+    """Object representing the local interface response.
+
+    Maps OBIS codes from the local poweropti API to flat fields.
+    Units: power in W, energy values in Wh.
+    """
+
+    _OBIS_MAP: ClassVar[dict[str, str]] = {
+        "1.7.0": "power",
+        "1.8.0": "energy_usage",
+        "1.8.1": "energy_usage_high_tariff",
+        "1.8.2": "energy_usage_low_tariff",
+        "2.8.0": "energy_return",
+    }
+
+    timestamp: datetime = field(
+        metadata=field_options(
+            deserialize=lambda x: datetime.fromtimestamp(x, tz=UTC),
+        )
+    )
+    power: int | None = None
+    energy_usage: int | None = None
+    energy_usage_high_tariff: int | None = None
+    energy_usage_low_tariff: int | None = None
+    energy_return: int | None = None
+
+    @classmethod
+    def __pre_deserialize__(cls, d: dict[str, Any]) -> dict[str, Any]:
+        """Map OBIS values array to flat fields before deserialization."""
+        for item in d.get("values", []):
+            field_name = cls._OBIS_MAP.get(item["obis"])
+            if field_name:
+                d[field_name] = item["value"]
+        return d
