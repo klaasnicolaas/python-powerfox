@@ -7,6 +7,7 @@ from .exceptions import (
     PowerfoxNoDataError,
     PowerfoxUnsupportedDeviceError,
 )
+from .local import PowerfoxLocal
 from .models import (
     Device,
     DeviceReport,
@@ -14,6 +15,7 @@ from .models import (
     EnergyReport,
     GasReport,
     HeatMeter,
+    LocalResponse,
     PowerMeter,
     Poweropti,
     ReportValue,
@@ -28,11 +30,13 @@ __all__ = [
     "EnergyReport",
     "GasReport",
     "HeatMeter",
+    "LocalResponse",
     "PowerMeter",
     "Powerfox",
     "PowerfoxAuthenticationError",
     "PowerfoxConnectionError",
     "PowerfoxError",
+    "PowerfoxLocal",
     "PowerfoxNoDataError",
     "PowerfoxUnsupportedDeviceError",
     "Poweropti",

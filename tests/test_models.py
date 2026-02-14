@@ -9,6 +9,7 @@ from powerfox import (
     DeviceReport,
     DeviceType,
     HeatMeter,
+    LocalResponse,
     Powerfox,
     PowerMeter,
     Poweropti,
@@ -256,3 +257,18 @@ async def test_report_day_requires_month(powerfox_client: Powerfox) -> None:
 def test_deserialize_timestamp_none() -> None:
     """Ensure timestamp helper handles None values."""
     assert _deserialize_timestamp(None) is None
+
+
+def test_local_response_unknown_obis() -> None:
+    """Test that unknown OBIS codes are silently ignored."""
+    response = LocalResponse.from_dict(
+        {
+            "timestamp": 1757053304,
+            "values": [
+                {"obis": "1.7.0", "value": 228},
+                {"obis": "99.99.99", "value": 999},
+            ],
+        }
+    )
+    assert response.power == 228
+    assert response.energy_usage is None

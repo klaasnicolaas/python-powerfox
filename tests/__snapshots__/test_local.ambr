@@ -1,0 +1,4 @@
+# serializer version: 1
+# name: test_value_snapshot
+  LocalResponse(timestamp=datetime.datetime(2025, 9, 5, 6, 21, 44, tzinfo=datetime.timezone.utc), power=228, energy_usage=17784955, energy_usage_high_tariff=17784955, energy_usage_low_tariff=0, energy_return=181)
+# ---
