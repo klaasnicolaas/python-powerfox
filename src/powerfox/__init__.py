@@ -5,6 +5,7 @@ from .exceptions import (
     PowerfoxConnectionError,
     PowerfoxError,
     PowerfoxNoDataError,
+    PowerfoxPrivacyError,
     PowerfoxUnsupportedDeviceError,
 )
 from .local import PowerfoxLocal
@@ -38,6 +39,7 @@ __all__ = [
     "PowerfoxError",
     "PowerfoxLocal",
     "PowerfoxNoDataError",
+    "PowerfoxPrivacyError",
     "PowerfoxUnsupportedDeviceError",
     "Poweropti",
     "ReportValue",
