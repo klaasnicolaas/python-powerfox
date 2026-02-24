@@ -7,7 +7,9 @@ from aresponses import ResponsesMockServer
 from powerfox import Powerfox
 from powerfox.exceptions import (
     PowerfoxAuthenticationError,
+    PowerfoxError,
     PowerfoxNoDataError,
+    PowerfoxPrivacyError,
     PowerfoxUnsupportedDeviceError,
 )
 
@@ -43,6 +45,85 @@ async def test_no_poweropti_devices(
     )
     with pytest.raises(PowerfoxNoDataError):
         assert await powerfox_client.all_devices()
+
+
+async def test_embedded_invalid_json_payload(
+    aresponses: ResponsesMockServer,
+    powerfox_client: Powerfox,
+) -> None:
+    """Test that an unparsable embedded payload is silently ignored."""
+    aresponses.add(
+        "backend.powerfox.energy",
+        "/api/2.0/test",
+        "GET",
+        aresponses.Response(
+            text='{"StatusCode": }',
+            headers={"Content-Type": "application/json"},
+        ),
+    )
+    # Malformed JSON -> decode raises ValueError -> guard returns, raw text returned
+    result = await powerfox_client._request("test")
+    assert '"StatusCode"' in result
+
+
+async def test_embedded_low_status_code_payload(
+    aresponses: ResponsesMockServer,
+    powerfox_client: Powerfox,
+) -> None:
+    """Test that an embedded StatusCode below 400 is silently ignored."""
+    aresponses.add(
+        "backend.powerfox.energy",
+        "/api/2.0/test",
+        "GET",
+        aresponses.Response(
+            text='{"StatusCode": 200}',
+            headers={"Content-Type": "application/json"},
+        ),
+    )
+    # StatusCode < 400 -> guard returns, raw text returned
+    result = await powerfox_client._request("test")
+    assert result == '{"StatusCode": 200}'
+
+
+async def test_embedded_generic_error_payload(
+    aresponses: ResponsesMockServer,
+    powerfox_client: Powerfox,
+) -> None:
+    """Test that an unknown embedded error status code raises PowerfoxError."""
+    aresponses.add(
+        "backend.powerfox.energy",
+        "/api/2.0/my/test/current",
+        "GET",
+        aresponses.Response(
+            text='{"StatusCode": 500, "ReasonPhrase": "Internal Server Error"}',
+            headers={"Content-Type": "application/json"},
+        ),
+    )
+    with pytest.raises(PowerfoxError):
+        await powerfox_client.device("test")
+
+
+async def test_embedded_precondition_failed_payload(
+    aresponses: ResponsesMockServer,
+    powerfox_client: Powerfox,
+) -> None:
+    """Test embedded API 412 in a HTTP 200 response is handled correctly."""
+    aresponses.add(
+        "backend.powerfox.energy",
+        "/api/2.0/my/test/current",
+        "GET",
+        aresponses.Response(
+            text=(
+                '{"Version":"1.1","Content":{"Headers":[{"Key":"Content-Type",'
+                '"Value":["text/plain; charset=utf-8"]}]},"StatusCode":412,'
+                '"ReasonPhrase":"Precondition Failed","Headers":[],'
+                '"TrailingHeaders":[]}'
+            ),
+            headers={"Content-Type": "application/json"},
+        ),
+    )
+    with pytest.raises(PowerfoxPrivacyError):
+        await powerfox_client.device("test")
 
 
 @pytest.mark.parametrize("method_name", ["device", "raw_device_data", "report"])

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+import json
 import socket
 from dataclasses import dataclass
 from importlib import metadata
@@ -20,6 +21,7 @@ from .exceptions import (
     PowerfoxConnectionError,
     PowerfoxError,
     PowerfoxNoDataError,
+    PowerfoxPrivacyError,
     PowerfoxUnsupportedDeviceError,
 )
 from .models import Device, DeviceReport, Poweropti
@@ -38,6 +40,43 @@ class Powerfox:
     session: ClientSession | None = None
 
     _close_session: bool = False
+
+    def _raise_for_embedded_api_error(self, response_text: str) -> None:
+        """Raise if Powerfox returned an API error envelope inside HTTP 200."""
+        if '"StatusCode"' not in response_text:
+            return
+
+        try:
+            api_response = json.loads(response_text)
+        except json.JSONDecodeError:
+            return
+
+        if (
+            not isinstance(api_response, dict)
+            or not isinstance(status_code := api_response.get("StatusCode"), int)
+            or status_code < 400
+        ):
+            return
+
+        match status_code:
+            case 412:
+                msg = (
+                    "Powerfox API refused data transfer, "
+                    "the customer may have denied data transmission."
+                )
+                raise PowerfoxPrivacyError(msg)
+            case _:
+                msg = "Powerfox API returned an error in the response payload."
+                raise PowerfoxError(
+                    msg,
+                    {
+                        "StatusCode": status_code,
+                        "ReasonPhrase": api_response.get(
+                            "ReasonPhrase", "Unknown error"
+                        ),
+                        "Response": api_response,
+                    },
+                )
 
     async def _request(
         self,
@@ -117,7 +156,9 @@ class Powerfox:
                 {"Content-Type": content_type, "Response": text},
             )
 
-        return await response.text()
+        response_text = await response.text()
+        self._raise_for_embedded_api_error(response_text)
+        return response_text
 
     async def all_devices(self) -> list[Device]:
         """Get list of all Poweropti devices.
