@@ -7,6 +7,7 @@ from unittest.mock import patch
 import pytest
 from aiohttp import ClientError, ClientResponse, ClientSession
 from aresponses import Response, ResponsesMockServer
+from syrupy.assertion import SnapshotAssertion
 
 from powerfox import PowerfoxLocal
 from powerfox.exceptions import (
@@ -44,7 +45,7 @@ async def test_value(
 async def test_value_snapshot(
     aresponses: ResponsesMockServer,
     powerfox_local_client: PowerfoxLocal,
-    snapshot: ...,
+    snapshot: SnapshotAssertion,
 ) -> None:
     """Test value response matches snapshot."""
     aresponses.add(
