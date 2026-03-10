@@ -53,7 +53,7 @@ ruff = "0.15.5"
 syrupy = "5.1.0"
 ty = "0.0.21"
 yamllint = "1.38.0"
-zizmor = "1.22.0"
+zizmor = "1.23.1"
 
 [tool.coverage.run]
 plugins = ["covdefaults"]
