@@ -10,7 +10,6 @@ from typing import Any, Self
 
 from aiohttp import ClientError, ClientResponseError, ClientSession
 from aiohttp.hdrs import METH_GET
-from mashumaro.codecs.orjson import ORJSONDecoder
 from yarl import URL
 
 from .exceptions import (
@@ -120,7 +119,7 @@ class PowerfoxLocal:
 
         """
         response = await self._request("value")
-        return ORJSONDecoder(LocalResponse).decode(response)
+        return LocalResponse.from_json(response)
 
     async def close(self) -> None:
         """Close open client session."""
