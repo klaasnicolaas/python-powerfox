@@ -28,6 +28,11 @@ from .models import Device, DeviceReport, Poweropti
 
 VERSION: str = metadata.version(__package__)  # ty:ignore[invalid-argument-type]
 
+_DEVICES_DECODER = ORJSONDecoder(list[Device])
+_POWEROPTI_DECODER = ORJSONDecoder(
+    Annotated[Poweropti, Discriminator(include_subtypes=True)]
+)
+
 
 @dataclass
 class Powerfox:
@@ -176,7 +181,7 @@ class Powerfox:
         if response == "[]":
             msg = "No Poweropti devices found."
             raise PowerfoxNoDataError(msg)
-        return ORJSONDecoder(list[Device]).decode(response)
+        return _DEVICES_DECODER.decode(response)
 
     async def device(self, device_id: str) -> Poweropti:
         """Get information about a specific Poweropti device.
@@ -203,11 +208,9 @@ class Powerfox:
             raise PowerfoxNoDataError(msg)
 
         try:
-            return ORJSONDecoder(
-                Annotated[Poweropti, Discriminator(include_subtypes=True)]
-            ).decode(response)
+            return _POWEROPTI_DECODER.decode(response)
         except SuitableVariantNotFoundError as err:
-            data = ORJSONDecoder(dict).decode(response)
+            data = json.loads(response)
             division = data.get("Division", "unknown")
             msg = (
                 "Unsupported device type received "
@@ -261,12 +264,12 @@ class Powerfox:
             params=params or None,
         )
 
-        data = ORJSONDecoder(dict).decode(response)
+        data = json.loads(response)
         if not data:
             msg = f"No report data available for Poweropti device {device_id}."
             raise PowerfoxNoDataError(msg)
 
-        return ORJSONDecoder(DeviceReport).decode(response)
+        return DeviceReport.from_json(response)
 
     async def raw_device_data(self, device_id: str) -> dict[str, Any]:
         """Get raw JSON data for a specific Poweropti device.
@@ -289,7 +292,7 @@ class Powerfox:
             params={"unit": "kwh"},
         )
 
-        data = ORJSONDecoder(dict).decode(response)
+        data = json.loads(response)
         if not data:
             msg = f"No data available for Poweropti device {device_id}."
             raise PowerfoxNoDataError(msg)

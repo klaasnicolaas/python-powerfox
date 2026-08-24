@@ -9,7 +9,7 @@ from aiohttp import ClientError, ClientResponse, ClientSession
 from aresponses import Response, ResponsesMockServer
 from syrupy.assertion import SnapshotAssertion
 
-from powerfox import PowerfoxLocal
+from powerfox import LocalResponse, PowerfoxLocal
 from powerfox.exceptions import (
     PowerfoxAuthenticationError,
     PowerfoxConnectionError,
@@ -40,6 +40,32 @@ async def test_value(
     assert response.energy_usage_high_tariff == 17784955
     assert response.energy_usage_low_tariff == 0
     assert response.energy_return == 181
+
+
+async def test_value_reuses_decoder(
+    aresponses: ResponsesMockServer,
+    powerfox_local_client: PowerfoxLocal,
+) -> None:
+    """Test repeated value calls use the precompiled model decoder."""
+    for _ in range(2):
+        aresponses.add(
+            "192.168.1.50",
+            "/value",
+            "GET",
+            aresponses.Response(
+                status=200,
+                headers={"Content-Type": "application/json"},
+                text=load_fixtures("local_value.json"),
+            ),
+        )
+
+    with patch.object(
+        LocalResponse, "from_json", wraps=LocalResponse.from_json
+    ) as decoder:
+        await powerfox_local_client.value()
+        await powerfox_local_client.value()
+
+    assert decoder.call_count == 2
 
 
 async def test_value_snapshot(

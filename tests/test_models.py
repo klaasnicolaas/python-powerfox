@@ -1,5 +1,7 @@
 """Test the models for Powerfox."""
 
+from unittest.mock import patch
+
 import pytest
 from aresponses import ResponsesMockServer
 from syrupy.assertion import SnapshotAssertion
@@ -87,6 +89,30 @@ async def test_power_meter_data(
     assert isinstance(power_meter, PowerMeter)
     assert power_meter.energy_usage_low_tariff is None
     assert power_meter.energy_usage_high_tariff is None
+
+
+async def test_device_reuses_decoder(
+    aresponses: ResponsesMockServer,
+    powerfox_client: Powerfox,
+) -> None:
+    """Test repeated device calls reuse the module-level decoder."""
+    for _ in range(2):
+        aresponses.add(
+            "backend.powerfox.energy",
+            "/api/2.0/my/power_device_id/current",
+            "GET",
+            aresponses.Response(
+                status=200,
+                headers={"Content-Type": "application/json"},
+                text=load_fixtures("power_meter.json"),
+            ),
+        )
+
+    with patch("powerfox.powerfox.ORJSONDecoder") as decoder:
+        await powerfox_client.device("power_device_id")
+        await powerfox_client.device("power_device_id")
+
+    decoder.assert_not_called()
 
 
 async def test_water_meter_data(
