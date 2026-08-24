@@ -4,7 +4,7 @@ name: PR Labels
 # yamllint disable-line rule:truthy
 on:
   # yamllint disable-line rule:comments
-  pull_request_target: # zizmor: ignore[dangerous-triggers] - Safe: only reads PR metadata, no code checkout
+  pull_request:
     types:
       - opened
       - labeled
