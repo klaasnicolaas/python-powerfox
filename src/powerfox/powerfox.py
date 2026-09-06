@@ -26,7 +26,7 @@ from .exceptions import (
 )
 from .models import Device, DeviceReport, Poweropti
 
-VERSION: str = metadata.version(__package__)  # ty:ignore[invalid-argument-type]
+VERSION: str = metadata.version("powerfox")
 
 _DEVICES_DECODER = ORJSONDecoder(list[Device])
 _POWEROPTI_DECODER = ORJSONDecoder(

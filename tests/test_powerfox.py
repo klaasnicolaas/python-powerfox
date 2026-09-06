@@ -1,6 +1,5 @@
 """Basic tests for Powerfox."""
 
-# pylint: disable=protected-access
 import asyncio
 from unittest.mock import patch
 

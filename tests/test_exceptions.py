@@ -1,6 +1,5 @@
 """Auth tests for PowerFox."""
 
-# pylint: disable=protected-access
 import pytest
 from aresponses import ResponsesMockServer
 
