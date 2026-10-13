@@ -9,6 +9,7 @@ from aresponses import Response, ResponsesMockServer
 
 from powerfox import Powerfox
 from powerfox.exceptions import (
+    PowerfoxAuthenticationError,
     PowerfoxConnectionError,
     PowerfoxError,
 )
@@ -126,3 +127,67 @@ async def test_response_status_404(
     )
     with pytest.raises(PowerfoxConnectionError):
         assert await powerfox_client._request("test")
+
+
+@pytest.mark.parametrize("failures", [1, 2])
+async def test_transient_unauthorized_retry(
+    aresponses: ResponsesMockServer,
+    powerfox_client: Powerfox,
+    failures: int,
+) -> None:
+    """Retry intermittent HTTP 401 responses before accepting a valid response."""
+    for _ in range(failures):
+        aresponses.add(
+            "backend.powerfox.energy",
+            "/api/2.0/test",
+            "GET",
+            aresponses.Response(status=401),
+        )
+    aresponses.add(
+        "backend.powerfox.energy",
+        "/api/2.0/test",
+        "GET",
+        aresponses.Response(
+            status=200,
+            headers={"Content-Type": "application/json"},
+            text=load_fixtures("all_devices.json"),
+        ),
+    )
+    with patch("powerfox.powerfox.asyncio.sleep", return_value=None):
+        assert await powerfox_client._request("test") == load_fixtures(
+            "all_devices.json"
+        )
+
+
+async def test_persistent_unauthorized(
+    aresponses: ResponsesMockServer,
+    powerfox_client: Powerfox,
+) -> None:
+    """Preserve authentication errors after bounded HTTP 401 retries."""
+    for _ in range(3):
+        aresponses.add(
+            "backend.powerfox.energy",
+            "/api/2.0/test",
+            "GET",
+            aresponses.Response(status=401),
+        )
+    with (
+        patch("powerfox.powerfox.asyncio.sleep", return_value=None),
+        pytest.raises(PowerfoxAuthenticationError),
+    ):
+        await powerfox_client._request("test")
+
+
+async def test_unauthorized_non_get_not_retried(
+    aresponses: ResponsesMockServer,
+    powerfox_client: Powerfox,
+) -> None:
+    """Do not retry methods that might have side effects."""
+    aresponses.add(
+        "backend.powerfox.energy",
+        "/api/2.0/test",
+        "POST",
+        aresponses.Response(status=401),
+    )
+    with pytest.raises(PowerfoxAuthenticationError):
+        await powerfox_client._request("test", method="POST")
