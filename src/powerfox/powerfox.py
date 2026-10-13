@@ -128,29 +128,34 @@ class Powerfox:
         # Set basic auth credentials.
         auth = BasicAuth(self.username, self.password)
 
-        try:
-            async with asyncio.timeout(self.request_timeout):
-                response = await self.session.request(
-                    method,
-                    url,
-                    auth=auth,
-                    headers=headers,
-                    params=params,
-                    ssl=True,
-                )
-                response.raise_for_status()
-        except TimeoutError as exception:
-            msg = "Timeout occurred while connecting to Powerfox API."
-            raise PowerfoxConnectionError(msg) from exception
-        except ClientResponseError as exception:
-            if exception.status == 401:
-                msg = "Authentication to the Powerfox API failed."
-                raise PowerfoxAuthenticationError(msg) from exception
-            msg = "Error occurred while communicating with Powerfox API."
-            raise PowerfoxConnectionError(msg) from exception
-        except (ClientError, socket.gaierror) as exception:
-            msg = "Error occurred while communicating with Powerfox API."
-            raise PowerfoxConnectionError(msg) from exception
+        for attempt in range(3):
+            try:
+                async with asyncio.timeout(self.request_timeout):
+                    response = await self.session.request(
+                        method,
+                        url,
+                        auth=auth,
+                        headers=headers,
+                        params=params,
+                        ssl=True,
+                    )
+                    response.raise_for_status()
+            except TimeoutError as exception:
+                msg = "Timeout occurred while connecting to Powerfox API."
+                raise PowerfoxConnectionError(msg) from exception
+            except ClientResponseError as exception:
+                if exception.status == 401:
+                    if method == METH_GET and attempt < 2:
+                        await asyncio.sleep(attempt + 1)
+                        continue
+                    msg = "Authentication to the Powerfox API failed."
+                    raise PowerfoxAuthenticationError(msg) from exception
+                msg = "Error occurred while communicating with Powerfox API."
+                raise PowerfoxConnectionError(msg) from exception
+            except (ClientError, socket.gaierror) as exception:
+                msg = "Error occurred while communicating with Powerfox API."
+                raise PowerfoxConnectionError(msg) from exception
+            break
 
         content_type = response.headers.get("Content-Type", "")
         if "application/json" not in content_type:
