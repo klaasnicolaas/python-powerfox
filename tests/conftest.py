@@ -9,7 +9,7 @@ from powerfox import Powerfox, PowerfoxLocal
 
 
 @pytest.fixture(name="powerfox_client")
-async def client() -> AsyncGenerator[Powerfox, None]:
+async def client() -> AsyncGenerator[Powerfox]:
     """Return a Powerfox client."""
     async with (
         ClientSession() as session,
@@ -19,7 +19,7 @@ async def client() -> AsyncGenerator[Powerfox, None]:
 
 
 @pytest.fixture(name="powerfox_local_client")
-async def local_client() -> AsyncGenerator[PowerfoxLocal, None]:
+async def local_client() -> AsyncGenerator[PowerfoxLocal]:
     """Return a PowerfoxLocal client."""
     async with (
         ClientSession() as session,
